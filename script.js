@@ -1,4 +1,5 @@
 const imageUpload = document.getElementById('imageUpload'),
+      removeBtn = document.getElementById('removePhotoBtn'),
       canvas = document.getElementById('mainCanvas'),
       ctx = canvas.getContext('2d'),
       downloadBtn = document.getElementById('downloadBtn');
@@ -12,18 +13,30 @@ frameImg.src = 'frame.png';
 frameImg.onload = () => draw();
 
 imageUpload.addEventListener('change', (e) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-        userImg.src = event.target.result;
-        userImg.onload = () => {
-            imgScale = Math.max(canvas.width / userImg.width, canvas.height / userImg.height) * 0.8;
-            imgX = (canvas.width - userImg.width * imgScale) / 2;
-            imgY = (canvas.height - userImg.height * imgScale) / 2;
-            draw();
+    if (e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            userImg = new Image();
+            userImg.onload = () => {
+                imgScale = Math.max(canvas.width / userImg.width, canvas.height / userImg.height) * 0.8;
+                imgX = (canvas.width - userImg.width * imgScale) / 2;
+                imgY = (canvas.height - userImg.height * imgScale) / 2;
+                removeBtn.style.display = 'inline-block';
+                draw();
+            };
+            userImg.src = event.target.result;
         };
-    };
-    reader.readAsDataURL(e.target.files[0]);
+        reader.readAsDataURL(e.target.files[0]);
+    }
 });
+
+// फोटो हटाउने फङ्सन
+removeBtn.onclick = () => {
+    userImg = new Image();
+    imageUpload.value = "";
+    removeBtn.style.display = 'none';
+    draw();
+};
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -33,25 +46,24 @@ function draw() {
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 }
 
-// माउस इभेन्ट्स
+// माउस र टच इभेन्ट्स (अघिल्लो फिक्सहरू सहित)
 canvas.onmousedown = (e) => { isDragging = true; lastX = e.clientX; lastY = e.clientY; };
 window.onmouseup = () => isDragging = false;
 canvas.onmousemove = (e) => {
-    if(!isDragging) return;
+    if(!isDragging || !userImg.src) return;
     imgX += (e.clientX - lastX) * (canvas.width / canvas.clientWidth);
     imgY += (e.clientY - lastY) * (canvas.height / canvas.clientHeight);
     lastX = e.clientX; lastY = e.clientY;
     draw();
 };
-canvas.onwheel = (e) => { e.preventDefault(); imgScale += e.deltaY > 0 ? -0.03 : 0.03; draw(); };
 
-// टच इभेन्ट्स
 canvas.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) { isDragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }
     else if (e.touches.length === 2) { initialPinchDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
 }, { passive: true });
 
 canvas.addEventListener('touchmove', (e) => {
+    if (!userImg.src) return;
     if (e.touches.length === 2) {
         e.preventDefault(); 
         const currentDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
