@@ -6,29 +6,34 @@
     <title>Lions District 325 F - Schooling Frame</title>
     <style>
         body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-align: center; background: #f4f7f9; padding: 10px; margin: 0; }
-        .container { max-width: 650px; margin: 20px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 8px solid #00338d; }
+        .container { max-width: 650px; margin: 20px auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 8px solid #00338d; }
         
-        .header-box { margin-bottom: 25px; }
-        .lions-intl { color: #00338d; font-size: 28px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .district-info { color: #b58d1d; font-size: 20px; font-weight: 700; margin-bottom: 10px; }
-        .event-title { background: #00338d; color: white; padding: 10px 20px; border-radius: 50px; display: inline-block; font-size: 22px; font-weight: bold; margin-top: 5px; box-shadow: 0 4px 10px rgba(0,51,141,0.3); }
-        .ly-year { display: block; font-size: 16px; color: #ffeb3b; margin-top: 3px; font-weight: normal; }
+        .header-box { margin-bottom: 20px; }
+        .lions-intl { color: #00338d; font-size: 26px; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; }
+        .district-info { color: #b58d1d; font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+        .event-title { background: #00338d; color: white; padding: 10px 20px; border-radius: 50px; display: inline-block; font-size: 20px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,51,141,0.3); }
+        .ly-year { display: block; font-size: 15px; color: #ffeb3b; margin-top: 3px; font-weight: normal; }
 
-        .upload-section { background: #f8f9fa; border: 2px dashed #00338d; padding: 20px; border-radius: 15px; margin: 20px 0; }
+        .upload-section { background: #f8f9fa; border: 2px dashed #00338d; padding: 15px; border-radius: 15px; margin: 20px 0; }
         
-        /* पूर्णविरामको समस्या समाधान गर्न फन्ट साइज १६px मा झारिएको */
-        .instr { font-weight:bold; color:#00338d; display:block; margin-bottom:10px; word-break: keep-all; font-size: 16px; line-height: 1.4; }
+        /* पूर्णविराम फिक्स र फन्ट साइज १५px */
+        .instr { font-weight:bold; color:#00338d; display:block; margin-bottom:12px; font-size: 15px; line-height: 1.5; word-break: keep-all; }
 
-        #mainCanvas { width: 100%; max-width: 500px; height: auto; border: 4px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.15); border-radius: 10px; cursor: move; margin-bottom: 20px; background: #eee; touch-action: pan-x pan-y; }
+        /* युनिभर्सल स्टाइल फाइल इनपुट */
+        input[type="file"] { background: white; padding: 8px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; width: 80%; max-width: 300px; }
+
+        .btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+        .remove-btn { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 14px; display: none; }
+
+        #mainCanvas { width: 100%; max-width: 500px; height: auto; border: 4px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.15); border-radius: 10px; cursor: move; margin: 20px 0; background: #eee; touch-action: pan-x pan-y; }
         
         #downloadBtn { 
-            width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 6px 15px rgba(40,167,69,0.4); text-transform: uppercase;
+            width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase;
         }
-        #downloadBtn:hover { background: #218838; }
 
-        .footer { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 15px; color: #444; }
-        .footer a { color: #00338d; text-decoration: none; font-weight: bold; border-bottom: 1px solid #00338d; }
-        .contact { font-weight: bold; color: #d9534f; margin-top: 5px; font-size: 16px; }
+        .footer { margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 14px; color: #444; }
+        .footer a { color: #00338d; text-decoration: none; font-weight: bold; }
+        .contact { font-weight: bold; color: #d9534f; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -46,6 +51,9 @@
     <div class="upload-section">
         <label for="imageUpload" class="instr">क्याबिनेट स्कुलिङ्गको लागी फेसबुक फ्रेम बनाउन कृपया आफ्नो फोटो छनोट गर्नुहोस् ।</label>
         <input type="file" id="imageUpload" accept="image/*">
+        <div class="btn-group">
+            <button id="removePhotoBtn" class="remove-btn">फोटो हटाउनुहोस्</button>
+        </div>
     </div>
 
     <canvas id="mainCanvas" width="2048" height="2048"></canvas>
