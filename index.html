@@ -15,12 +15,13 @@
         .ly-year { display: block; font-size: 16px; color: #ffeb3b; margin-top: 3px; font-weight: normal; }
 
         .upload-section { background: #f8f9fa; border: 2px dashed #00338d; padding: 20px; border-radius: 15px; margin: 20px 0; }
-        /* पूर्णविराम समस्या समाधान */
-        .instr { font-weight:bold; color:#00338d; display:block; margin-bottom:10px; }
+        /* पूर्णविराम नझरोस् भनेर word-break: keep-all प्रयोग गरिएको */
+        .instr { font-weight:bold; color:#00338d; display:block; margin-bottom:10px; word-break: keep-all; }
 
-        #mainCanvas { width: 100%; max-width: 500px; height: auto; border: 4px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.15); border-radius: 10px; cursor: move; margin-bottom: 20px; background: #eee; touch-action: none; }
+        /* स्क्रोलिङ समस्या समाधानका लागि touch-action: pan-x pan-y */
+        #mainCanvas { width: 100%; max-width: 500px; height: auto; border: 4px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.15); border-radius: 10px; cursor: move; margin-bottom: 20px; background: #eee; touch-action: pan-x pan-y; }
         
-        /* बटन साइज सुधार */
+        /* बटनको फन्ट साइज १८px मा मिलाइएको */
         #downloadBtn { 
             width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 6px 15px rgba(40,167,69,0.4); text-transform: uppercase;
         }
