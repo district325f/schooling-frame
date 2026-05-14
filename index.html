@@ -5,33 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lions District 325 F - Photo Frame</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; background: #f0f2f5; padding: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #f0f2f5; padding: 20px; }
         .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h1 { color: #004a99; margin: 0; font-size: 24px; }
-        h3 { color: #555; margin: 5px 0 20px 0; }
+        h1 { color: #004a99; margin: 0; font-size: 26px; }
+        h3 { color: #555; margin: 5px 0 10px 0; font-weight: normal; }
+        h2 { color: #004a99; margin-bottom: 20px; border-top: 1px solid #ddd; padding-top: 10px; }
         
-        .instruction { font-size: 14px; color: #d9534f; font-weight: bold; margin-bottom: 10px; display: none; }
+        .upload-section { border: 2px dashed #004a99; padding: 20px; border-radius: 10px; background: #f9fbff; margin-bottom: 20px; }
+        .instruction { font-size: 14px; color: #d9534f; font-weight: bold; margin: 10px 0; display: none; }
         
-        /* क्यानभास सेटिङ - यसलाई युजरले देख्ने गरी मिलाइएको छ */
+        /* क्यानभास - जहाँ फोटो देखिन्छ र सार्न मिल्छ */
         #mainCanvas { 
             width: 100%; 
             max-width: 500px; 
             height: auto; 
             border: 2px solid #ddd; 
             border-radius: 10px; 
-            cursor: move; /* सार्न मिल्छ भन्ने बुझाउन */
+            cursor: move;
             display: none; 
-            margin: auto;
+            margin: 20px auto;
         }
 
-        .upload-section { border: 2px dashed #004a99; padding: 20px; border-radius: 10px; background: #f9fbff; margin-bottom: 20px; }
-        
-        button { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s; }
+        button { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
         #downloadBtn { background: #28a745; color: white; display: none; }
-        #downloadBtn:hover { background: #218838; }
         
         input[type="file"] { width: 100%; }
-        #status { font-weight: bold; color: #004a99; margin: 10px 0; }
+        #status { font-weight: bold; color: #004a99; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -39,19 +38,18 @@
 <div class="container">
     <h1>Lions International</h1>
     <h3>District 325 F</h3>
+    <h2>Cabinet Schooling</h2>
     
     <div class="upload-section">
         <p>आफ्नो फोटो छनोट गर्नुहोस्:</p>
         <input type="file" id="imageUpload" accept="image/*">
     </div>
 
-    <p id="instruction" class="instruction">फोटोलाई माउस वा औंलाले सार्दै फ्रेम भित्र मिलाउनुहोस्</p>
+    <p id="instruction" class="instruction">फोटोलाई सार्दै फ्रेम भित्र मिलाउनुहोस्</p>
     
-    <!-- युजरले सिधै यहाँ फोटो चलाउन सक्छन् -->
     <canvas id="mainCanvas" width="2048" height="2048"></canvas>
 
     <p id="status"></p>
-    
     <button id="downloadBtn">फ्रेम डाउनलोड गर्नुहोस्</button>
 </div>
 
