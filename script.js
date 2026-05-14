@@ -45,7 +45,7 @@ canvas.onmousemove = (e) => {
 };
 canvas.onwheel = (e) => { e.preventDefault(); imgScale += e.deltaY > 0 ? -0.03 : 0.03; draw(); };
 
-// टच इभेन्ट्स (स्क्रोलिङ फिक्ससहित)
+// टच इभेन्ट्स
 canvas.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) { isDragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }
     else if (e.touches.length === 2) { initialPinchDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
@@ -57,9 +57,13 @@ canvas.addEventListener('touchmove', (e) => {
         const currentDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
         if (initialPinchDistance) { imgScale *= (currentDistance / initialPinchDistance); initialPinchDistance = currentDistance; draw(); }
     } else if (e.touches.length === 1 && isDragging) {
-        imgX += (e.touches[0].clientX - lastX) * (canvas.width / canvas.clientWidth);
-        imgY += (e.touches[0].clientY - lastY) * (canvas.height / canvas.clientHeight);
-        lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; draw();
+        const dx = e.touches[0].clientX - lastX;
+        const dy = e.touches[0].clientY - lastY;
+        if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+            imgX += dx * (canvas.width / canvas.clientWidth);
+            imgY += dy * (canvas.height / canvas.clientHeight);
+            lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; draw();
+        }
     }
 }, { passive: false });
 
