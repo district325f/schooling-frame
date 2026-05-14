@@ -3,51 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cabinet Schooling Frame Generator</title>
+    <title>Lions Cabinet Schooling Frame</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background: #eef2f5; padding: 20px; color: #333; }
-        .container { max-width: 550px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        h2 { color: #004a99; margin-bottom: 10px; }
-        p { color: #666; margin-bottom: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        h2 { color: #004a99; }
         
-        .upload-box { border: 2px dashed #004a99; padding: 20px; border-radius: 10px; margin-bottom: 20px; background: #f8fbff; }
-        input[type="file"] { width: 100%; cursor: pointer; }
-
-        canvas { display: none; }
-        .preview-img { width: 100%; border-radius: 10px; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        /* फोटो हाल्ने ठाउँ */
+        .upload-section { border: 2px dashed #004a99; padding: 30px; border-radius: 10px; background: #f9f9f9; margin-bottom: 20px; }
         
-        button { border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; width: 100%; margin-top: 15px; }
-        
-        #createBtn { background: #004a99; color: white; display: none; }
-        #createBtn:hover { background: #003366; }
-        #createBtn:disabled { background: #ccc; cursor: not-allowed; }
-
+        /* बटनहरू */
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        #createBtn { background: #004a99; color: white; display: none; } /* फोटो छानेपछि मात्र देखिन्छ */
         #downloadBtn { background: #28a745; color: white; display: none; }
-        #downloadBtn:hover { background: #218838; }
-
-        #statusMsg { margin-top: 15px; font-weight: bold; color: #d9534f; display: none; }
+        
+        /* लोडिङ र प्रिभ्यु */
+        #status { color: #d9534f; font-weight: bold; margin: 15px 0; display: none; }
+        .preview-img { width: 100%; border-radius: 10px; margin-top: 15px; border: 1px solid #ddd; }
+        canvas { display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>Cabinet Schooling</h2>
-    <p>आफ्नो फोटो छनोट गर्नुहोस् र फ्रेम बनाउनुहोस्।</p>
+    <p>आफ्नो फोटो छनोट गरी फ्रेम तयार पार्नुहोस्।</p>
     
-    <div class="upload-box">
+    <div class="upload-section">
         <input type="file" id="imageUpload" accept="image/*">
+        <p id="fileName" style="margin-top:10px; font-size:14px; color:#555;"></p>
     </div>
 
-    <button id="createBtn">Create Frame</button>
-    <p id="statusMsg">फ्रेम बन्दैछ, कृपया पर्खनुहोस्...</p>
+    <!-- युजरले फोटो छान्नासाथ यो बटन देखिन्छ -->
+    <button id="createBtn" class="btn">Create Frame Now</button>
     
-    <!-- सुरुआतमा टेम्प्लेट देखिन्छ, पछि बनेको फोटो देखिन्छ -->
+    <p id="status">प्रक्रिया सुरु भयो, कृपया केही क्षण पर्खनुहोस्...</p>
+    
+    <!-- यहाँ बनेको फोटो देखिन्छ -->
     <img id="preview" class="preview-img" src="frame.png" alt="Preview">
     
-    <!-- पर्दा पछाडि काम गर्ने क्यानभास -->
     <canvas id="mainCanvas" width="2048" height="2048"></canvas>
     
-    <button id="downloadBtn">फ्रेम डाउनलोड गर्नुहोस्</button>
+    <button id="downloadBtn" class="btn">डाउनलोड गर्नुहोस्</button>
 </div>
 
 <script src="script.js"></script>
