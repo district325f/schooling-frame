@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lions Cabinet Schooling Frame</title>
+    <title>Lions District 325 F Frame</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #f0f2f5; padding: 20px; }
         .container { max-width: 500px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
-        h2 { color: #004a99; }
         
-        /* फोटो हाल्ने ठाउँ */
-        .upload-section { border: 2px dashed #004a99; padding: 30px; border-radius: 10px; background: #f9f9f9; margin-bottom: 20px; }
-        
-        /* बटनहरू */
+        /* Heading Styles */
+        h1 { color: #004a99; margin-bottom: 5px; font-size: 28px; }
+        h3 { color: #555; margin-top: 0; margin-bottom: 20px; font-weight: 500; }
+        h4 { color: #004a99; margin-top: 10px; }
+
+        .upload-section { border: 2px dashed #004a99; padding: 20px; border-radius: 10px; background: #f9f9f9; margin-bottom: 20px; }
         .btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        #createBtn { background: #004a99; color: white; display: none; } /* फोटो छानेपछि मात्र देखिन्छ */
+        #createBtn { background: #004a99; color: white; display: none; }
         #downloadBtn { background: #28a745; color: white; display: none; }
-        
-        /* लोडिङ र प्रिभ्यु */
         #status { color: #d9534f; font-weight: bold; margin: 15px 0; display: none; }
         .preview-img { width: 100%; border-radius: 10px; margin-top: 15px; border: 1px solid #ddd; }
         canvas { display: none; }
@@ -26,22 +25,21 @@
 <body>
 
 <div class="container">
-    <h2>Cabinet Schooling</h2>
-    <p>आफ्नो फोटो छनोट गरी फ्रेम तयार पार्नुहोस्।</p>
+    <h1>Lions International</h1>
+    <h3>District 325 F</h3>
+    
+    <h4>Cabinet Schooling</h4>
+    <p>आफ्नो फोटो छनोट गरी फ्रेम तयार पार्नुहोस् ।</p>
     
     <div class="upload-section">
         <input type="file" id="imageUpload" accept="image/*">
         <p id="fileName" style="margin-top:10px; font-size:14px; color:#555;"></p>
     </div>
 
-    <!-- युजरले फोटो छान्नासाथ यो बटन देखिन्छ -->
     <button id="createBtn" class="btn">Create Frame Now</button>
+    <p id="status"></p> <!-- यहाँ के भइरहेको छ देखिन्छ -->
     
-    <p id="status">प्रक्रिया सुरु भयो, कृपया केही क्षण पर्खनुहोस्...</p>
-    
-    <!-- यहाँ बनेको फोटो देखिन्छ -->
     <img id="preview" class="preview-img" src="frame.png" alt="Preview">
-    
     <canvas id="mainCanvas" width="2048" height="2048"></canvas>
     
     <button id="downloadBtn" class="btn">डाउनलोड गर्नुहोस्</button>
