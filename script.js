@@ -6,7 +6,7 @@ const imageUpload = document.getElementById('imageUpload'),
 let userImg = new Image(), frameImg = new Image();
 let imgX = 512, imgY = 512, imgScale = 0.5;
 let isDragging = false, lastX, lastY;
-let initialPinchDistance = null; // मोबाइल जुमको लागि
+let initialPinchDistance = null;
 
 frameImg.src = 'frame.png';
 frameImg.onload = () => draw();
@@ -16,7 +16,6 @@ imageUpload.addEventListener('change', (e) => {
     reader.onload = (event) => {
         userImg.src = event.target.result;
         userImg.onload = () => {
-            // सुरुमा फोटोलाई बिचमा र ठिक्क साइजमा राख्ने
             imgScale = Math.max(canvas.width / userImg.width, canvas.height / userImg.height) * 0.8;
             imgX = (canvas.width - userImg.width * imgScale) / 2;
             imgY = (canvas.height - userImg.height * imgScale) / 2;
@@ -34,7 +33,7 @@ function draw() {
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 }
 
-// १. माउस इभेन्ट्स (डेस्कटपका लागि)
+// माउस इभेन्ट्स
 canvas.onmousedown = (e) => { isDragging = true; lastX = e.clientX; lastY = e.clientY; };
 window.onmouseup = () => isDragging = false;
 canvas.onmousemove = (e) => {
@@ -44,54 +43,27 @@ canvas.onmousemove = (e) => {
     lastX = e.clientX; lastY = e.clientY;
     draw();
 };
-canvas.onwheel = (e) => {
-    e.preventDefault();
-    imgScale += e.deltaY > 0 ? -0.03 : 0.03;
-    draw();
-};
+canvas.onwheel = (e) => { e.preventDefault(); imgScale += e.deltaY > 0 ? -0.03 : 0.03; draw(); };
 
-// २. टच इभेन्ट्स (मोबाइलका लागि - Drag र Pinch Zoom)
+// टच इभेन्ट्स (स्क्रोलिङ फिक्ससहित)
 canvas.addEventListener('touchstart', (e) => {
-    if (e.touches.length === 1) {
-        isDragging = true;
-        lastX = e.touches[0].clientX;
-        lastY = e.touches[0].clientY;
-    } else if (e.touches.length === 2) {
-        // दुई औंला बीचको दुरी नाप्ने
-        initialPinchDistance = Math.hypot(
-            e.touches[0].clientX - e.touches[1].clientX,
-            e.touches[0].clientY - e.touches[1].clientY
-        );
-    }
-}, { passive: false });
+    if (e.touches.length === 1) { isDragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }
+    else if (e.touches.length === 2) { initialPinchDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
+}, { passive: true });
 
 canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    if (e.touches.length === 1 && isDragging) {
-        // मोबाइलमा फोटो सार्ने
+    if (e.touches.length === 2) {
+        e.preventDefault(); 
+        const currentDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+        if (initialPinchDistance) { imgScale *= (currentDistance / initialPinchDistance); initialPinchDistance = currentDistance; draw(); }
+    } else if (e.touches.length === 1 && isDragging) {
         imgX += (e.touches[0].clientX - lastX) * (canvas.width / canvas.clientWidth);
         imgY += (e.touches[0].clientY - lastY) * (canvas.height / canvas.clientHeight);
-        lastX = e.touches[0].clientX;
-        lastY = e.touches[0].clientY;
-    } else if (e.touches.length === 2) {
-        // मोबाइलमा दुई औंलाले जुम गर्ने
-        const currentDistance = Math.hypot(
-            e.touches[0].clientX - e.touches[1].clientX,
-            e.touches[0].clientY - e.touches[1].clientY
-        );
-        if (initialPinchDistance) {
-            const zoomFactor = currentDistance / initialPinchDistance;
-            imgScale *= zoomFactor;
-            initialPinchDistance = currentDistance;
-        }
+        lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; draw();
     }
-    draw();
 }, { passive: false });
 
-canvas.addEventListener('touchend', () => {
-    isDragging = false;
-    initialPinchDistance = null;
-});
+canvas.addEventListener('touchend', () => { isDragging = false; initialPinchDistance = null; });
 
 downloadBtn.onclick = () => {
     const link = document.createElement('a');
