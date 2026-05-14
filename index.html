@@ -2,57 +2,30 @@
 <html lang="ne">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lions District 325 F - Photo Frame</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #f0f2f5; padding: 20px; }
         .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h1 { color: #004a99; margin: 0; font-size: 26px; }
-        h3 { color: #555; margin: 5px 0 10px 0; font-weight: normal; }
-        h2 { color: #004a99; margin-bottom: 20px; border-top: 1px solid #ddd; padding-top: 10px; }
-        
-        .upload-section { border: 2px dashed #004a99; padding: 20px; border-radius: 10px; background: #f9fbff; margin-bottom: 20px; }
-        .instruction { font-size: 14px; color: #d9534f; font-weight: bold; margin: 10px 0; display: none; }
-        
-        /* क्यानभास - जहाँ फोटो देखिन्छ र सार्न मिल्छ */
-        #mainCanvas { 
-            width: 100%; 
-            max-width: 500px; 
-            height: auto; 
-            border: 2px solid #ddd; 
-            border-radius: 10px; 
-            cursor: move;
-            display: none; 
-            margin: 20px auto;
-        }
-
-        button { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
-        #downloadBtn { background: #28a745; color: white; display: none; }
-        
-        input[type="file"] { width: 100%; }
-        #status { font-weight: bold; color: #004a99; margin-top: 10px; }
+        h1 { color: #004a99; font-size: 24px; }
+        #mainCanvas { width: 100%; max-width: 500px; height: auto; border: 2px solid #ddd; border-radius: 10px; cursor: move; margin: 20px auto; }
+        .footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; font-size: 14px; color: #555; }
+        a { color: #004a99; font-weight: bold; text-decoration: none; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <h1>Lions International</h1>
-    <h3>District 325 F</h3>
-    <h2>Cabinet Schooling</h2>
-    
-    <div class="upload-section">
-        <p>आफ्नो फोटो छनोट गर्नुहोस्:</p>
-        <input type="file" id="imageUpload" accept="image/*">
-    </div>
-
-    <p id="instruction" class="instruction">फोटोलाई सार्दै फ्रेम भित्र मिलाउनुहोस्</p>
-    
+    <h3>District 325 F - Cabinet Schooling</h3>
+    <input type="file" id="imageUpload" accept="image/*">
+    <p>फोटोमा क्लिक गरी सार्नुहोस् वा माउस ह्विलले <b>Zoom In/Out</b> गर्नुहोस्।</p>
     <canvas id="mainCanvas" width="2048" height="2048"></canvas>
-
-    <p id="status"></p>
-    <button id="downloadBtn">फ्रेम डाउनलोड गर्नुहोस्</button>
+    <button id="downloadBtn" style="padding:15px; width:100%; background:#28a745; color:white; border:none; border-radius:5px;">डाउनलोड गर्नुहोस्</button>
+    
+    <div class="footer">
+        <p>Design by: <a href="https://www.facebook.com/your-profile-link" target="_blank">Nirajan Aryal</a></p>
+        <p>Contact: 9851113811</p>
+    </div>
 </div>
-
 <script src="script.js"></script>
 </body>
 </html>
