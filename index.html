@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cabinet Schooling Frame Generator</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        canvas { width: 100%; height: auto; border-radius: 10px; margin-top: 15px; display: none; }
+        .preview-img { width: 100%; border-radius: 10px; margin-top: 15px; }
+        input[type="file"] { margin: 20px 0; }
+        button { background: #004a99; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        button:hover { background: #003366; }
+        .download-btn { display: none; background: #28a745; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Cabinet Schooling Frame</h2>
+    <p>आफ्नो फोटो छनोट गर्नुहोस् र फ्रेम डाउनलोड गर्नुहोस्।</p>
+    
+    <input type="file" id="imageUpload" accept="image/*">
+    <br>
+    <img id="preview" class="preview-img" src="frame.png" alt="Preview">
+    <canvas id="mainCanvas" width="2048" height="2048"></canvas>
+    
+    <br>
+    <button id="downloadBtn" class="download-btn">फ्रेम डाउनलोड गर्नुहोस्</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
