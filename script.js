@@ -1,83 +1,53 @@
 const imageUpload = document.getElementById('imageUpload'),
       canvas = document.getElementById('mainCanvas'),
       ctx = canvas.getContext('2d'),
-      downloadBtn = document.getElementById('downloadBtn'),
-      instruction = document.getElementById('instruction'),
-      statusMsg = document.getElementById('status');
+      downloadBtn = document.getElementById('downloadBtn');
 
 let userImg = new Image(), frameImg = new Image();
-let imgX = 0, imgY = 0, imgScale = 1;
-let isDragging = false, startX, startY;
+let imgX = 512, imgY = 512, imgScale = 0.5; // फ्रेममा फिट हुने गरी सुरुको सेटिङ
+let isDragging = false, lastX, lastY;
 
-// टेम्प्लेट लोड गर्ने
-frameImg.src = 'frame.png'; 
+frameImg.src = 'frame.png';
 
-frameImg.onerror = function() {
-    statusMsg.innerText = "Error: 'frame.png' फाइल भेटिएन। कृपया फाइल अपलोड भएको पक्का गर्नुहोस्।";
-    statusMsg.style.color = "red";
-};
+// फ्रेम सधैं देखाउन
+frameImg.onload = () => draw();
 
-imageUpload.addEventListener('change', function(e) {
+imageUpload.addEventListener('change', (e) => {
     const reader = new FileReader();
-    reader.onload = function(event) {
-        userImg.onload = function() {
-            imgScale = Math.max(canvas.width / userImg.width, canvas.height / userImg.height);
-            imgX = (canvas.width - userImg.width * imgScale) / 2;
-            imgY = (canvas.height - userImg.height * imgScale) / 2;
-            
-            canvas.style.display = "block";
-            instruction.style.display = "block";
-            downloadBtn.style.display = "block";
-            statusMsg.innerText = "तपाईँको फ्रेम तयार भयो! अब फोटो मिलाउन सक्नुहुन्छ।";
-            statusMsg.style.color = "#004a99";
-            
-            draw();
-        }
+    reader.onload = (event) => {
         userImg.src = event.target.result;
-    }
+        userImg.onload = () => draw();
+    };
     reader.readAsDataURL(e.target.files[0]);
 });
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(userImg, imgX, imgY, userImg.width * imgScale, userImg.height * imgScale);
+    if(userImg.src) ctx.drawImage(userImg, imgX, imgY, userImg.width * imgScale, userImg.height * imgScale);
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 }
 
-// अन्तरक्रिया (Interactions)
-function getPos(e) {
-    let rect = canvas.getBoundingClientRect();
-    let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-    let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-    return { x: x * (canvas.width / rect.width), y: y * (canvas.height / rect.height) };
-}
-
-function start(e) {
-    isDragging = true;
-    let pos = getPos(e);
-    startX = pos.x; startY = pos.y;
-    if(e.type === 'touchstart') e.preventDefault();
-}
-
-function move(e) {
-    if (!isDragging) return;
-    let pos = getPos(e);
-    imgX += (pos.x - startX);
-    imgY += (pos.y - startY);
-    startX = pos.x; startY = pos.y;
+// Drag & Zoom लजिक
+canvas.onmousedown = (e) => { isDragging = true; lastX = e.clientX; lastY = e.clientY; };
+window.onmouseup = () => isDragging = false;
+canvas.onmousemove = (e) => {
+    if(!isDragging) return;
+    imgX += (e.clientX - lastX); imgY += (e.clientY - lastY);
+    lastX = e.clientX; lastY = e.clientY;
     draw();
-    if(e.type === 'touchmove') e.preventDefault();
-}
+};
 
-function stop() { isDragging = false; }
+// Mouse Wheel ले Zoom गर्ने
+canvas.onwheel = (e) => {
+    e.preventDefault();
+    let zoomSpeed = 0.05;
+    imgScale += e.deltaY > 0 ? -zoomSpeed : zoomSpeed;
+    draw();
+};
 
-canvas.onmousedown = start; canvas.ontouchstart = start;
-window.onmousemove = move; window.ontouchmove = move;
-window.onmouseup = stop; window.ontouchend = stop;
-
-downloadBtn.addEventListener('click', function() {
+downloadBtn.onclick = () => {
     const link = document.createElement('a');
-    link.download = 'Lions_District_325F_Frame.png';
+    link.download = 'Lions_Frame.png';
     link.href = canvas.toDataURL("image/png", 1.0);
     link.click();
-});
+};
