@@ -1,77 +1,126 @@
 const imageUpload = document.getElementById('imageUpload');
-const createBtn = document.getElementById('createBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const statusMsg = document.getElementById('status');
-const preview = document.getElementById('preview');
-const fileNameDisplay = document.getElementById('fileName');
 const canvas = document.getElementById('mainCanvas');
 const ctx = canvas.getContext('2d');
+const downloadBtn = document.getElementById('downloadBtn');
+const instruction = document.getElementById('instruction');
+const statusMsg = document.getElementById('status');
 
-// महत्वपूर्ण: तपाईँको टेम्प्लेट फाइलको नाम यहाँ जे छ त्यही राख्नुहोला (e.g. '1000145608.png')
-const framePath = 'frame.png'; 
+let userImg = new Image();
+let frameImg = new Image();
+frameImg.src = 'frame.png'; // तपाईँको टेम्प्लेट फाइल
 
-let userFile;
+let imgX = 0, imgY = 0, imgScale = 1;
+let isDragging = false;
+let startX, startY;
 
+// १. फोटो अपलोड भएपछि
 imageUpload.addEventListener('change', function(e) {
-    userFile = e.target.files[0];
-    if (userFile) {
-        fileNameDisplay.innerText = "Selected: " + userFile.name;
-        createBtn.style.display = "block";
-        downloadBtn.style.display = "none";
-        statusMsg.style.display = "none";
-    }
-});
-
-createBtn.addEventListener('click', function() {
-    if (!userFile) return;
-
-    statusMsg.innerText = "प्रक्रिया सुरु भयो, कृपया पर्खनुहोस्...";
-    statusMsg.style.display = "block";
-    createBtn.disabled = true;
-    createBtn.innerText = "Processing...";
-
     const reader = new FileReader();
     reader.onload = function(event) {
-        const userImg = new Image();
         userImg.onload = function() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // सुरुमा फोटोलाई फ्रेममा अट्ने गरी अटो-साइज गर्ने
+            imgScale = Math.max(canvas.width / userImg.width, canvas.height / userImg.height);
+            imgX = (canvas.width - userImg.width * imgScale) / 2;
+            imgY = (canvas.height - userImg.height * imgScale) / 2;
             
-            let scale = Math.max(canvas.width / userImg.width, canvas.height / userImg.height);
-            let x = (canvas.width / 2) - (userImg.width / 2) * scale;
-            let y = (canvas.height / 2) - (userImg.height / 2) * scale;
+            canvas.style.display = "block";
+            instruction.style.display = "block";
+            downloadBtn.style.display = "block";
+            statusMsg.innerText = "तपाईँको फ्रेम तयार भयो!";
             
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(userImg, x, y, userImg.width * scale, userImg.height * scale);
-
-            const frameImg = new Image();
-            frameImg.src = framePath; 
-
-            frameImg.onload = function() {
-                ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
-                preview.src = canvas.toDataURL("image/png");
-                statusMsg.style.display = "none";
-                createBtn.style.display = "none";
-                downloadBtn.style.display = "block";
-                createBtn.disabled = false;
-                createBtn.innerText = "Create Frame Now";
-            };
-
-            // यदि फ्रेम लोड भएन भने एरर सन्देश दिने
-            frameImg.onerror = function() {
-                statusMsg.innerText = "Error: टेम्प्लेट फाइल भेटिएन । कृपया फाइलको नाम जाँच गर्नुहोस् ।";
-                createBtn.disabled = false;
-                createBtn.innerText = "Create Frame Now";
-            };
-        };
+            draw();
+        }
         userImg.src = event.target.result;
-    };
-    reader.readAsDataURL(userFile);
+    }
+    reader.readAsDataURL(e.target.files[0]);
 });
 
+// २. ड्र गर्ने मुख्य फङ्सन
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // फोटो ड्र गर्ने
+    ctx.drawImage(userImg, imgX, imgY, userImg.width * imgScale, userImg.height * imgScale);
+    
+    // माथिबाट फ्रेम ड्र गर्ने
+    ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+}
+
+// ३. माउस र टच कन्ट्रोल (सार्नको लागि)
+
+// माउस थिच्दा
+canvas.onmousedown = function(e) {
+    isDragging = true;
+    startX = e.offsetX;
+    startY = e.offsetY;
+};
+
+// माउस छोड्दा
+window.onmouseup = function() {
+    isDragging = false;
+};
+
+// माउस चलाउँदा
+canvas.onmousemove = function(e) {
+    if (isDragging) {
+        // क्यानभासको वास्तविक साइज र स्क्रिनमा देखिने साइजको अनुपात मिलाउने
+        let rect = canvas.getBoundingClientRect();
+        let scaleX = canvas.width / rect.width;
+        let scaleY = canvas.height / rect.height;
+
+        let dx = (e.offsetX - startX) * scaleX;
+        let dy = (e.offsetY - startY) * scaleY;
+
+        imgX += dx;
+        imgY += dy;
+
+        startX = e.offsetX;
+        startY = e.offsetY;
+        draw();
+    }
+};
+
+// मोबाइलको लागि टच कन्ट्रोल
+canvas.ontouchstart = function(e) {
+    isDragging = true;
+    let touch = e.touches[0];
+    let rect = canvas.getBoundingClientRect();
+    startX = touch.clientX - rect.left;
+    startY = touch.clientY - rect.top;
+    e.preventDefault();
+};
+
+canvas.ontouchend = function() {
+    isDragging = false;
+};
+
+canvas.ontouchmove = function(e) {
+    if (isDragging) {
+        let touch = e.touches[0];
+        let rect = canvas.getBoundingClientRect();
+        let scaleX = canvas.width / rect.width;
+        let scaleY = canvas.height / rect.height;
+
+        let currentX = touch.clientX - rect.left;
+        let currentY = touch.clientY - rect.top;
+
+        let dx = (currentX - startX) * scaleX;
+        let dy = (currentY - startY) * scaleY;
+
+        imgX += dx;
+        imgY += dy;
+
+        startX = currentX;
+        startY = currentY;
+        draw();
+    }
+    e.preventDefault();
+};
+
+// ४. डाउनलोड
 downloadBtn.addEventListener('click', function() {
     const link = document.createElement('a');
-    link.download = 'Lions_Frame_325F.png';
+    link.download = 'Lions_District_Frame.png';
     link.href = canvas.toDataURL("image/png", 1.0);
     link.click();
 });
