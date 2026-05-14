@@ -7,23 +7,25 @@ const fileNameDisplay = document.getElementById('fileName');
 const canvas = document.getElementById('mainCanvas');
 const ctx = canvas.getContext('2d');
 
+// महत्वपूर्ण: तपाईँको टेम्प्लेट फाइलको नाम यहाँ जे छ त्यही राख्नुहोला (e.g. '1000145608.png')
+const framePath = 'frame.png'; 
+
 let userFile;
 
-// १. युजरले फोटो छान्नासाथ "Create Frame" बटन देखाउने
 imageUpload.addEventListener('change', function(e) {
     userFile = e.target.files[0];
     if (userFile) {
         fileNameDisplay.innerText = "Selected: " + userFile.name;
-        createBtn.style.display = "block"; // बटन देखियो
+        createBtn.style.display = "block";
         downloadBtn.style.display = "none";
-        preview.style.opacity = "0.5"; // अलि धमिलो बनाउने ताकि नयाँ बन्दैछ भन्ने बुझियोस्
+        statusMsg.style.display = "none";
     }
 });
 
-// २. बटन थिचेपछि मात्र फोटो प्रोसेस गर्ने
 createBtn.addEventListener('click', function() {
     if (!userFile) return;
 
+    statusMsg.innerText = "प्रक्रिया सुरु भयो, कृपया पर्खनुहोस्...";
     statusMsg.style.display = "block";
     createBtn.disabled = true;
     createBtn.innerText = "Processing...";
@@ -32,7 +34,6 @@ createBtn.addEventListener('click', function() {
     reader.onload = function(event) {
         const userImg = new Image();
         userImg.onload = function() {
-            // क्यानभासमा ड्र गर्ने
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             let scale = Math.max(canvas.width / userImg.width, canvas.height / userImg.height);
@@ -43,18 +44,24 @@ createBtn.addEventListener('click', function() {
             ctx.imageSmoothingQuality = 'high';
             ctx.drawImage(userImg, x, y, userImg.width * scale, userImg.height * scale);
 
-            // फ्रेम थप्ने
             const frameImg = new Image();
-            frameImg.src = 'frame.png'; 
+            frameImg.src = framePath; 
+
             frameImg.onload = function() {
                 ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
-                
-                // नतिजा देखाउने
                 preview.src = canvas.toDataURL("image/png");
-                preview.style.opacity = "1";
                 statusMsg.style.display = "none";
                 createBtn.style.display = "none";
                 downloadBtn.style.display = "block";
+                createBtn.disabled = false;
+                createBtn.innerText = "Create Frame Now";
+            };
+
+            // यदि फ्रेम लोड भएन भने एरर सन्देश दिने
+            frameImg.onerror = function() {
+                statusMsg.innerText = "Error: टेम्प्लेट फाइल भेटिएन । कृपया फाइलको नाम जाँच गर्नुहोस् ।";
+                createBtn.disabled = false;
+                createBtn.innerText = "Create Frame Now";
             };
         };
         userImg.src = event.target.result;
@@ -62,10 +69,9 @@ createBtn.addEventListener('click', function() {
     reader.readAsDataURL(userFile);
 });
 
-// ३. डाउनलोड
 downloadBtn.addEventListener('click', function() {
     const link = document.createElement('a');
-    link.download = 'Cabinet_Schooling_Frame.png';
+    link.download = 'Lions_Frame_325F.png';
     link.href = canvas.toDataURL("image/png", 1.0);
     link.click();
 });
