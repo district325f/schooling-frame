@@ -5,29 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cabinet Schooling Frame Generator</title>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        canvas { width: 100%; height: auto; border-radius: 10px; margin-top: 15px; display: none; }
-        .preview-img { width: 100%; border-radius: 10px; margin-top: 15px; }
-        input[type="file"] { margin: 20px 0; }
-        button { background: #004a99; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; }
-        button:hover { background: #003366; }
-        .download-btn { display: none; background: #28a745; margin-top: 15px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background: #eef2f5; padding: 20px; color: #333; }
+        .container { max-width: 550px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { color: #004a99; margin-bottom: 10px; }
+        p { color: #666; margin-bottom: 20px; }
+        
+        .upload-box { border: 2px dashed #004a99; padding: 20px; border-radius: 10px; margin-bottom: 20px; background: #f8fbff; }
+        input[type="file"] { width: 100%; cursor: pointer; }
+
+        canvas { display: none; }
+        .preview-img { width: 100%; border-radius: 10px; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        
+        button { border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; width: 100%; margin-top: 15px; }
+        
+        #createBtn { background: #004a99; color: white; display: none; }
+        #createBtn:hover { background: #003366; }
+        #createBtn:disabled { background: #ccc; cursor: not-allowed; }
+
+        #downloadBtn { background: #28a745; color: white; display: none; }
+        #downloadBtn:hover { background: #218838; }
+
+        #statusMsg { margin-top: 15px; font-weight: bold; color: #d9534f; display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Cabinet Schooling Frame</h2>
-    <p>आफ्नो फोटो छनोट गर्नुहोस् र फ्रेम डाउनलोड गर्नुहोस्।</p>
+    <h2>Cabinet Schooling</h2>
+    <p>आफ्नो फोटो छनोट गर्नुहोस् र फ्रेम बनाउनुहोस्।</p>
     
-    <input type="file" id="imageUpload" accept="image/*">
-    <br>
+    <div class="upload-box">
+        <input type="file" id="imageUpload" accept="image/*">
+    </div>
+
+    <button id="createBtn">Create Frame</button>
+    <p id="statusMsg">फ्रेम बन्दैछ, कृपया पर्खनुहोस्...</p>
+    
+    <!-- सुरुआतमा टेम्प्लेट देखिन्छ, पछि बनेको फोटो देखिन्छ -->
     <img id="preview" class="preview-img" src="frame.png" alt="Preview">
+    
+    <!-- पर्दा पछाडि काम गर्ने क्यानभास -->
     <canvas id="mainCanvas" width="2048" height="2048"></canvas>
     
-    <br>
-    <button id="downloadBtn" class="download-btn">फ्रेम डाउनलोड गर्नुहोस्</button>
+    <button id="downloadBtn">फ्रेम डाउनलोड गर्नुहोस्</button>
 </div>
 
 <script src="script.js"></script>
