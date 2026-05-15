@@ -36,9 +36,9 @@
 
     <div class="frames-container">
         <div class="frame-card">
-            <div class="day-label">DAY-1</div>
+            <div class="day-label">For 2 Nights/3 Days</div>
             <div class="upload-section">
-                <label class="instr">क्याबिनेट स्कुलिङ्गको लागी फेसबुक फ्रेम बनाउन कृपया आफ्नो फोटो छनोट गर्नुहोस्।</label>
+                <label class="instr">क्याबिनेट स्कुलिङ्गको लागी फेसबुक फ्रेम बनाउन कृपया आफ्नो फोटो छनोट गर्नुहोस् ।</label>
                 <input type="file" class="img-input" data-id="1" accept="image/*">
             </div>
             <button class="remove-btn" id="remove1" data-id="1">फोटो हटाउनुहोस्</button>
@@ -47,9 +47,9 @@
         </div>
 
         <div class="frame-card">
-            <div class="day-label">DAY-2</div>
+            <div class="day-label">For 1 Night/ 2 Days</div>
             <div class="upload-section">
-                <label class="instr">क्याबिनेट स्कुलिङ्गको लागी फेसबुक फ्रेम बनाउन कृपया आफ्नो फोटो छनोट गर्नुहोस्।</label>
+                <label class="instr">क्याबिनेट स्कुलिङ्गको लागी फेसबुक फ्रेम बनाउन कृपया आफ्नो फोटो छनोट गर्नुहोस् ।</label>
                 <input type="file" class="img-input" data-id="2" accept="image/*">
             </div>
             <button class="remove-btn" id="remove2" data-id="2">फोटो हटाउनुहोस्</button>
@@ -178,7 +178,7 @@
         btn.onclick = (e) => {
             const id = e.target.dataset.id;
             if(!frames[id].hasPhoto) {
-                alert("कृपया पहिले आफ्नो फोटो छनोट गर्नुहोस्।");
+                alert("कृपया पहिले आफ्नो फोटो छनोट गर्नुहोस् ।");
                 return;
             }
             const link = document.createElement('a');
