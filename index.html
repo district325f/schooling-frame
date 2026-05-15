@@ -2,7 +2,7 @@
 <html lang="ne">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
     <title>Lions District 325 F - Schooling Frame</title>
     <style>
         body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-align: center; background: #f4f7f9; padding: 10px; margin: 0; }
@@ -10,22 +10,20 @@
         .header-box { margin-bottom: 20px; }
         .lions-intl { color: #00338d; font-size: 26px; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; }
         .district-info { color: #b58d1d; font-size: 19px; font-weight: 700; margin-bottom: 10px; }
-        .event-title { background: #00338d; color: white; padding: 10px 20px; border-radius: 50px; display: inline-block; font-size: 20px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,51,141,0.3); }
+        .event-title { background: #00338d; color: white; padding: 10px 20px; border-radius: 50px; display: inline-block; font-size: 20px; font-weight: bold; }
         .ly-year { display: block; font-size: 15px; color: #ffeb3b; margin-top: 3px; font-weight: normal; }
         .frames-container { display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; margin-top: 25px; }
-        .frame-card { flex: 1; min-width: 320px; max-width: 420px; background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .frame-card { flex: 1; min-width: 320px; max-width: 420px; background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #ddd; }
         .day-label { font-size: 20px; font-weight: 800; color: #00338d; margin-bottom: 10px; border-bottom: 2px solid #b58d1d; display: inline-block; padding-bottom: 3px; }
         .upload-section { background: #f8f9fa; border: 2px dashed #00338d; padding: 15px; border-radius: 15px; margin: 15px 0; }
-        .instr { font-weight:bold; color:#00338d; display:block; margin-bottom:12px; font-size: 15px; line-height: 1.5; }
         input[type="file"] { background: white; padding: 8px; border-radius: 8px; border: 1px solid #ccc; font-size: 13px; width: 90%; cursor: pointer; }
         
-        /* touch-action: pan-y ले ब्राउजरलाई तल-माथि स्क्रोल गर्न दिन्छ */
+        /* pan-y ले भर्टिकल स्क्रोलिङलाई ब्राउजरको जिम्मामा छोडिदिन्छ, जसले गर्दा स्क्रोल फास्ट हुन्छ */
         canvas { width: 100%; height: auto; border: 2px solid #eee; border-radius: 10px; cursor: move; background: #f0f0f0; touch-action: pan-y; margin: 15px 0; }
         
-        .remove-btn { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; display: none; margin-bottom: 10px; }
-        .download-btn { width: 100%; padding: 14px; background: #28a745; color: white; border: none; border-radius: 12px; font-size: 17px; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .remove-btn { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; display: none; margin-bottom: 10px; }
+        .download-btn { width: 100%; padding: 14px; background: #28a745; color: white; border: none; border-radius: 12px; font-size: 17px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
         .footer { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 14px; color: #444; }
-        .contact { font-weight: bold; color: #d9534f; margin-top: 5px; font-size: 15px; }
     </style>
 </head>
 <body>
@@ -41,7 +39,6 @@
         <div class="frame-card">
             <div class="day-label">For 2 Nights/3 Days</div>
             <div class="upload-section">
-                <label class="instr">क्याबिनेट स्कुलिङ्गको लागी फेसबुक फ्रेम बनाउन कृपया आफ्नो फोटो छनोट गर्नुहोस् ।</label>
                 <input type="file" class="img-input" data-id="1" accept="image/*">
             </div>
             <button class="remove-btn" id="remove1" data-id="1">फोटो हटाउनुहोस्</button>
@@ -52,7 +49,6 @@
         <div class="frame-card">
             <div class="day-label">For 1 Night/ 2 Days</div>
             <div class="upload-section">
-                <label class="instr">क्याबिनेट स्कुलिङ्गको लागी फेसबुक फ्रेम बनाउन कृपया आफ्नो फोटो छनोट गर्नुहोस् ।</label>
                 <input type="file" class="img-input" data-id="2" accept="image/*">
             </div>
             <button class="remove-btn" id="remove2" data-id="2">फोटो हटाउनुहोस्</button>
@@ -61,15 +57,12 @@
         </div>
     </div>
     
-    <div class="footer">
-        Design by: <b>Nirajan Aryal</b>
-        <div class="contact">Contact: 9851113811</div>
-    </div>
+    <div class="footer">Design by: <b>Nirajan Aryal</b> | 9851113811</div>
 </div>
 
 <script>
-    const frameImg1 = new Image(); frameImg1.src = 'day1.png?v=10'; 
-    const frameImg2 = new Image(); frameImg2.src = 'day2.png?v=10';
+    const frameImg1 = new Image(); frameImg1.src = 'day1.png?v=11'; 
+    const frameImg2 = new Image(); frameImg2.src = 'day2.png?v=11';
 
     const frames = {
         1: { canvas: document.getElementById('canvas1'), ctx: document.getElementById('canvas1').getContext('2d'), userImg: new Image(), frameImg: frameImg1, hasPhoto: false, x: 0, y: 0, scale: 1, dragging: false, lastX: 0, lastY: 0, lastDist: 0 },
@@ -90,22 +83,20 @@
         input.addEventListener('change', (e) => {
             const id = e.target.dataset.id;
             const f = frames[id];
-            if (e.target.files && e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    f.userImg = new Image();
-                    f.userImg.onload = () => {
-                        f.hasPhoto = true;
-                        f.scale = Math.max(f.canvas.width / f.userImg.width, f.canvas.height / f.userImg.height);
-                        f.x = (f.canvas.width - f.userImg.width * f.scale) / 2;
-                        f.y = (f.canvas.height - f.userImg.height * f.scale) / 2;
-                        document.getElementById(`remove${id}`).style.display = 'inline-block';
-                        draw(id);
-                    };
-                    f.userImg.src = event.target.result;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                f.userImg = new Image();
+                f.userImg.onload = () => {
+                    f.hasPhoto = true;
+                    f.scale = Math.max(f.canvas.width / f.userImg.width, f.canvas.height / f.userImg.height);
+                    f.x = (f.canvas.width - f.userImg.width * f.scale) / 2;
+                    f.y = (f.canvas.height - f.userImg.height * f.scale) / 2;
+                    document.getElementById(`remove${id}`).style.display = 'inline-block';
+                    draw(id);
                 };
-                reader.readAsDataURL(e.target.files[0]);
-            }
+                f.userImg.src = ev.target.result;
+            };
+            reader.readAsDataURL(e.target.files[0]);
         });
     });
 
@@ -113,6 +104,7 @@
         const f = frames[id];
         const canvas = f.canvas;
 
+        // PC Mouse
         canvas.onmousedown = (e) => { if(f.hasPhoto){ f.dragging = true; f.lastX = e.clientX; f.lastY = e.clientY; }};
         window.addEventListener('mouseup', () => f.dragging = false);
         canvas.onmousemove = (e) => {
@@ -124,15 +116,13 @@
             draw(id);
         };
 
-        // --- Smart Mobile Controls ---
+        // --- Optimized Mobile Controls ---
         canvas.addEventListener('touchstart', (e) => {
             if(!f.hasPhoto) return;
-            
             if(e.touches.length === 2) {
-                // यदि दुई औँला छ भने स्क्रिन जुम रोक्ने (e.preventDefault)
-                e.preventDefault();
+                e.preventDefault(); // केवल जुम गर्दा मात्र डिफल्ट रोक्ने
                 f.lastDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-            } else if(e.touches.length === 1) {
+            } else {
                 f.dragging = true;
                 f.lastX = e.touches[0].clientX;
                 f.lastY = e.touches[0].clientY;
@@ -143,8 +133,7 @@
             if(!f.hasPhoto) return;
 
             if(e.touches.length === 2) {
-                // दुई औँलाले फोटो मात्र जुम गर्ने
-                e.preventDefault();
+                e.preventDefault(); // फोटो जुम गर्दा स्क्रिन स्थिर रहन्छ
                 const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
                 f.scale *= (dist / f.lastDist);
                 f.lastDist = dist;
@@ -153,10 +142,9 @@
                 const dx = e.touches[0].clientX - f.lastX;
                 const dy = e.touches[0].clientY - f.lastY;
 
-                // यदि दायाँ-बायाँ (Horizontal) चाल बढी छ भने फोटो सार्ने र स्क्रोल रोक्ने
-                // यदि माथि-तल (Vertical) तानिएको छ भने e.preventDefault नगर्ने (ताकि पेज स्क्रोल होस्)
-                if(Math.abs(dx) > Math.abs(dy)) {
-                    e.preventDefault(); 
+                // यदि दायाँ-बायाँ तानिएको छ भने फोटो सार्ने, नत्र ब्राउजरलाई स्क्रोल गर्न दिने
+                if(Math.abs(dx) > Math.abs(dy) + 5) { 
+                    e.preventDefault(); // फोटो सार्दा मात्र स्क्रोल रोक्ने
                     const rect = canvas.getBoundingClientRect();
                     f.x += dx * (canvas.width / rect.width);
                     f.y += dy * (canvas.height / rect.height);
@@ -170,12 +158,10 @@
         canvas.addEventListener('touchend', () => f.dragging = false);
     });
 
-    // Remove & Download Functions
     document.querySelectorAll('.remove-btn').forEach(btn => {
         btn.onclick = (e) => {
             const id = e.target.dataset.id;
             frames[id].hasPhoto = false;
-            frames[id].userImg = new Image();
             document.querySelector(`.img-input[data-id="${id}"]`).value = "";
             btn.style.display = 'none';
             draw(id);
@@ -185,9 +171,9 @@
     document.querySelectorAll('.download-btn').forEach(btn => {
         btn.onclick = (e) => {
             const id = e.target.dataset.id;
-            if(!frames[id].hasPhoto) { alert("कृपया पहिले फोटो छनोट गर्नुहोस्"); return; }
+            if(!frames[id].hasPhoto) { alert("कृपया फोटो छनोट गर्नुहोस्"); return; }
             const link = document.createElement('a');
-            link.download = `Lions_Frame_Day${id}.png`;
+            link.download = `Frame_Day${id}.png`;
             link.href = frames[id].canvas.toDataURL("image/png");
             link.click();
         };
