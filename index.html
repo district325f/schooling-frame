@@ -18,7 +18,8 @@
         .upload-section { background: #f8f9fa; border: 2px dashed #00338d; padding: 15px; border-radius: 15px; margin: 15px 0; }
         .instr { font-weight:bold; color:#00338d; display:block; margin-bottom:12px; font-size: 15px; line-height: 1.5; }
         input[type="file"] { background: white; padding: 8px; border-radius: 8px; border: 1px solid #ccc; font-size: 13px; width: 90%; cursor: pointer; }
-        canvas { width: 100%; height: auto; border: 2px solid #eee; border-radius: 10px; cursor: move; background: #f0f0f0; touch-action: none; margin: 15px 0; }
+        /* touch-action: none लाई pan-y मा परिवर्तन गरियो ताकि मोबाइलमा स्क्रोल होस् */
+        canvas { width: 100%; height: auto; border: 2px solid #eee; border-radius: 10px; cursor: move; background: #f0f0f0; touch-action: pan-y; margin: 15px 0; }
         .remove-btn { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; display: none; margin-bottom: 10px; }
         .download-btn { width: 100%; padding: 14px; background: #28a745; color: white; border: none; border-radius: 12px; font-size: 17px; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
         .footer { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 14px; color: #444; }
@@ -122,7 +123,6 @@
         };
     });
 
-    // Mouse Controls Fix
     [1, 2].forEach(id => {
         const f = frames[id];
         const canvas = f.canvas;
@@ -134,7 +134,6 @@
             f.lastY = e.clientY;
         };
 
-        // Window level mouseup to stop dragging even if mouse leaves canvas
         window.addEventListener('mouseup', () => { f.dragging = false; });
 
         canvas.onmousemove = (e) => {
@@ -149,7 +148,6 @@
             draw(id);
         };
 
-        // Touch Controls
         canvas.ontouchstart = (e) => {
             if(!f.hasPhoto) return;
             if(e.touches.length == 1) {
@@ -160,17 +158,23 @@
         };
         canvas.ontouchend = () => { f.dragging = false; };
         canvas.ontouchmove = (e) => {
+            // यदि फोटो तान्दै हुनुहुन्छ भने मात्र फोटो हलचल हुन्छ, नत्र पेज स्क्रोल हुन्छ
             if(!f.dragging || !f.hasPhoto) return;
+            
             const rect = canvas.getBoundingClientRect();
             const scaleX = canvas.width / rect.width;
             const scaleY = canvas.height / rect.height;
             const dx = e.touches[0].clientX - f.lastX;
             const dy = e.touches[0].clientY - f.lastY;
-            f.x += dx * scaleX;
-            f.y += dy * scaleY;
-            f.lastX = e.touches[0].clientX;
-            f.lastY = e.touches[0].clientY;
-            draw(id);
+
+            // फोटोको चाल (Movement) धेरै छ भने मात्र सार्ने (ताकि सानो टचमा स्क्रोल नरोकियोस्)
+            if(Math.abs(dx) > 2 || Math.abs(dy) > 2) {
+                f.x += dx * scaleX;
+                f.y += dy * scaleY;
+                f.lastX = e.touches[0].clientX;
+                f.lastY = e.touches[0].clientY;
+                draw(id);
+            }
         };
     });
 
