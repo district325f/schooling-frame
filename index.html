@@ -19,8 +19,8 @@
         .instr { font-weight:bold; color:#00338d; display:block; margin-bottom:12px; font-size: 15px; line-height: 1.5; }
         input[type="file"] { background: white; padding: 8px; border-radius: 8px; border: 1px solid #ccc; font-size: 13px; width: 90%; cursor: pointer; }
         
-        /* touch-action: none ले ब्राउजरको डिफल्ट स्क्रोललाई क्यानभास भित्र रोक्छ */
-        canvas { width: 100%; height: auto; border: 2px solid #eee; border-radius: 10px; cursor: move; background: #f0f0f0; touch-action: none; margin: 15px 0; }
+        /* touch-action: pan-y ले ब्राउजरलाई तल-माथि स्क्रोल गर्न दिन्छ */
+        canvas { width: 100%; height: auto; border: 2px solid #eee; border-radius: 10px; cursor: move; background: #f0f0f0; touch-action: pan-y; margin: 15px 0; }
         
         .remove-btn { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; display: none; margin-bottom: 10px; }
         .download-btn { width: 100%; padding: 14px; background: #28a745; color: white; border: none; border-radius: 12px; font-size: 17px; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
@@ -68,8 +68,8 @@
 </div>
 
 <script>
-    const frameImg1 = new Image(); frameImg1.src = 'day1.png?v=9'; 
-    const frameImg2 = new Image(); frameImg2.src = 'day2.png?v=9';
+    const frameImg1 = new Image(); frameImg1.src = 'day1.png?v=10'; 
+    const frameImg2 = new Image(); frameImg2.src = 'day2.png?v=10';
 
     const frames = {
         1: { canvas: document.getElementById('canvas1'), ctx: document.getElementById('canvas1').getContext('2d'), userImg: new Image(), frameImg: frameImg1, hasPhoto: false, x: 0, y: 0, scale: 1, dragging: false, lastX: 0, lastY: 0, lastDist: 0 },
@@ -113,7 +113,6 @@
         const f = frames[id];
         const canvas = f.canvas;
 
-        // PC Controls
         canvas.onmousedown = (e) => { if(f.hasPhoto){ f.dragging = true; f.lastX = e.clientX; f.lastY = e.clientY; }};
         window.addEventListener('mouseup', () => f.dragging = false);
         canvas.onmousemove = (e) => {
@@ -125,45 +124,53 @@
             draw(id);
         };
 
-        // Mobile Controls (Fixed: Dragging photo will NOT scroll page, Pinching will NOT zoom screen)
+        // --- Smart Mobile Controls ---
         canvas.addEventListener('touchstart', (e) => {
             if(!f.hasPhoto) return;
-            // क्यानभासमा छुँदा स्क्रोल हुन नदिन र फोटो मात्र चलाउन
-            e.preventDefault(); 
             
-            if(e.touches.length === 1) {
+            if(e.touches.length === 2) {
+                // यदि दुई औँला छ भने स्क्रिन जुम रोक्ने (e.preventDefault)
+                e.preventDefault();
+                f.lastDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+            } else if(e.touches.length === 1) {
                 f.dragging = true;
                 f.lastX = e.touches[0].clientX;
                 f.lastY = e.touches[0].clientY;
-            } else if(e.touches.length === 2) {
-                f.dragging = false;
-                f.lastDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
             }
         }, { passive: false });
 
         canvas.addEventListener('touchmove', (e) => {
             if(!f.hasPhoto) return;
-            e.preventDefault(); // सबै डिफल्ट स्क्रोल र जुम रोक्छ
 
-            const rect = canvas.getBoundingClientRect();
-            if(e.touches.length === 1 && f.dragging) {
-                const dx = e.touches[0].clientX - f.lastX;
-                const dy = e.touches[0].clientY - f.lastY;
-                f.x += dx * (canvas.width / rect.width);
-                f.y += dy * (canvas.height / rect.height);
-                f.lastX = e.touches[0].clientX;
-                f.lastY = e.touches[0].clientY;
-            } else if(e.touches.length === 2) {
+            if(e.touches.length === 2) {
+                // दुई औँलाले फोटो मात्र जुम गर्ने
+                e.preventDefault();
                 const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
                 f.scale *= (dist / f.lastDist);
                 f.lastDist = dist;
+                draw(id);
+            } else if(e.touches.length === 1 && f.dragging) {
+                const dx = e.touches[0].clientX - f.lastX;
+                const dy = e.touches[0].clientY - f.lastY;
+
+                // यदि दायाँ-बायाँ (Horizontal) चाल बढी छ भने फोटो सार्ने र स्क्रोल रोक्ने
+                // यदि माथि-तल (Vertical) तानिएको छ भने e.preventDefault नगर्ने (ताकि पेज स्क्रोल होस्)
+                if(Math.abs(dx) > Math.abs(dy)) {
+                    e.preventDefault(); 
+                    const rect = canvas.getBoundingClientRect();
+                    f.x += dx * (canvas.width / rect.width);
+                    f.y += dy * (canvas.height / rect.height);
+                    f.lastX = e.touches[0].clientX;
+                    f.lastY = e.touches[0].clientY;
+                    draw(id);
+                }
             }
-            draw(id);
         }, { passive: false });
 
         canvas.addEventListener('touchend', () => f.dragging = false);
     });
 
+    // Remove & Download Functions
     document.querySelectorAll('.remove-btn').forEach(btn => {
         btn.onclick = (e) => {
             const id = e.target.dataset.id;
