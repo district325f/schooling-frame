@@ -6,36 +6,42 @@
     <title>Lions District 325 F - Schooling Frame</title>
     <style>
         body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-align: center; background: #f4f7f9; padding: 10px; margin: 0; }
-        .container { max-width: 900px; margin: 20px auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 8px solid #00338d; }
+        .container { max-width: 950px; margin: 20px auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 8px solid #00338d; }
         
+        /* Header Styling */
         .header-box { margin-bottom: 20px; }
         .lions-intl { color: #00338d; font-size: 26px; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; }
         .district-info { color: #b58d1d; font-size: 19px; font-weight: 700; margin-bottom: 10px; }
         .event-title { background: #00338d; color: white; padding: 10px 20px; border-radius: 50px; display: inline-block; font-size: 20px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,51,141,0.3); }
         .ly-year { display: block; font-size: 15px; color: #ffeb3b; margin-top: 3px; font-weight: normal; }
 
-        /* दुईवटा फ्रेमलाई सँगै देखाउन */
-        .frames-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 25px; }
-        .frame-card { flex: 1; min-width: 320px; max-width: 400px; background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .day-label { font-size: 20px; font-weight: 800; color: #00338d; margin-bottom: 10px; text-transform: uppercase; border-bottom: 2px solid #b58d1d; display: inline-block; }
+        /* Layout for Two Frames */
+        .frames-container { display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; margin-top: 25px; }
+        .frame-card { flex: 1; min-width: 320px; max-width: 420px; background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .day-label { font-size: 20px; font-weight: 800; color: #00338d; margin-bottom: 10px; text-transform: uppercase; border-bottom: 2px solid #b58d1d; display: inline-block; padding-bottom: 3px; }
 
+        /* Upload Section */
         .upload-section { background: #f8f9fa; border: 2px dashed #00338d; padding: 15px; border-radius: 15px; margin: 15px 0; }
         .instr { font-weight:bold; color:#00338d; display:block; margin-bottom:12px; font-size: 15px; line-height: 1.5; word-break: keep-all; }
 
         input[type="file"] { background: white; padding: 8px; border-radius: 8px; border: 1px solid #ccc; font-size: 13px; width: 90%; cursor: pointer; }
 
-        canvas { width: 100%; height: auto; border: 2px solid #eee; border-radius: 10px; cursor: move; background: #f0f0f0; touch-action: pan-x pan-y; margin: 15px 0; }
+        /* Canvas / Frame Display */
+        canvas { width: 100%; height: auto; border: 2px solid #eee; border-radius: 10px; cursor: move; background: #f0f0f0; touch-action: none; margin: 15px 0; }
         
-        .btn-group { display: flex; flex-direction: column; gap: 10px; }
-        .remove-btn { background: #dc3545; color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer; font-size: 13px; display: none; }
+        .remove-btn { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; display: none; margin-bottom: 10px; transition: 0.2s; }
+        .remove-btn:hover { background: #c82333; }
         
+        /* Download Button */
         .download-btn { 
             width: 100%; padding: 14px; background: #28a745; color: white; border: none; border-radius: 12px; font-size: 17px; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase;
         }
-        .download-btn:hover { background: #218838; }
+        .download-btn:hover { background: #218838; box-shadow: 0 4px 12px rgba(40,167,69,0.3); }
 
+        /* Footer */
         .footer { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 14px; color: #444; }
-        .footer a { color: #00338d; text-decoration: none; font-weight: bold; }
+        .footer a { color: #00338d; text-decoration: none; font-weight: bold; border-bottom: 1px solid #00338d; }
+        .contact { font-weight: bold; color: #d9534f; margin-top: 5px; font-size: 15px; }
     </style>
 </head>
 <body>
@@ -56,8 +62,8 @@
             <div class="upload-section">
                 <label class="instr">क्याबिनेट स्कुलिङ्गको लागी फेसबुक फ्रेम बनाउन कृपया आफ्नो फोटो छनोट गर्नुहोस्।</label>
                 <input type="file" class="img-input" data-id="1" accept="image/*">
-                <button class="remove-btn" data-id="1">फोटो हटाउनुहोस्</button>
             </div>
+            <button class="remove-btn" data-id="1">फोटो हटाउनुहोस्</button>
             <canvas id="canvas1" width="2048" height="2048"></canvas>
             <button class="download-btn" data-id="1">फ्रेम डाउनलोड गर्नुहोस् (Day-1)</button>
         </div>
@@ -65,10 +71,10 @@
         <div class="frame-card">
             <div class="day-label">Day-2</div>
             <div class="upload-section">
-                <label class="instr">क्याबिनेट स्कुलिङ्गको लागी फेसबुक फ्रेम बनाउन कृपया आफ्नो फोटो छनोट गर्नुहोस् ।</label>
+                <label class="instr">क्याबिनेट स्कुलिङ्गको लागी फेसबुक फ्रेम बनाउन कृपया आफ्नो फोटो छनोट गर्नुहोस्।</label>
                 <input type="file" class="img-input" data-id="2" accept="image/*">
-                <button class="remove-btn" data-id="2">फोटो हटाउनुहोस्</button>
             </div>
+            <button class="remove-btn" data-id="2">फोटो हटाउनुहोस्</button>
             <canvas id="canvas2" width="2048" height="2048"></canvas>
             <button class="download-btn" data-id="2">फ्रेम डाउनलोड गर्नुहोस् (Day-2)</button>
         </div>
@@ -76,10 +82,122 @@
     
     <div class="footer">
         Design by: <a href="https://www.facebook.com/nirajan.aryal.92" target="_blank">Nirajan Aryal</a>
-        <div class="contact" style="font-weight: bold; color: #d9534f; margin-top: 5px;">Contact: 9851113811</div>
+        <div class="contact">Contact: 9851113811</div>
     </div>
 </div>
 
-<script src="script.js"></script>
+<script>
+    // फ्रेम इमेजहरू लोड गर्ने
+    const frameImg1 = new Image();
+    frameImg1.src = 'Day1.png';
+    const frameImg2 = new Image();
+    frameImg2.src = 'day2.png';
+
+    // प्रत्येक फ्रेमको डाटा म्यानेज गर्न अब्जेक्ट
+    const frames = {
+        1: { canvas: document.getElementById('canvas1'), ctx: document.getElementById('canvas1').getContext('2d'), userImg: new Image(), frameImg: frameImg1, x: 512, y: 512, scale: 0.5, dragging: false, lastX: 0, lastY: 0, initialDist: null },
+        2: { canvas: document.getElementById('canvas2'), ctx: document.getElementById('canvas2').getContext('2d'), userImg: new Image(), frameImg: frameImg2, x: 512, y: 512, scale: 0.5, dragging: false, lastX: 0, lastY: 0, initialDist: null }
+    };
+
+    // इमेज लोड भएपछि क्यानभास कोर्ने
+    frameImg1.onload = () => draw(1);
+    frameImg2.onload = () => draw(2);
+
+    function draw(id) {
+        const f = frames[id];
+        f.ctx.clearRect(0, 0, f.canvas.width, f.canvas.height);
+        if(f.userImg.src) {
+            f.ctx.drawImage(f.userImg, f.x, f.y, f.userImg.width * f.scale, f.userImg.height * f.scale);
+        }
+        f.ctx.drawImage(f.frameImg, 0, 0, f.canvas.width, f.canvas.height);
+    }
+
+    // फोटो अपलोड र रिडर
+    document.querySelectorAll('.img-input').forEach(input => {
+        input.addEventListener('change', (e) => {
+            const id = e.target.dataset.id;
+            const f = frames[id];
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    f.userImg = new Image();
+                    f.userImg.onload = () => {
+                        // अटो साइज फिट गर्ने
+                        f.scale = Math.max(f.canvas.width / f.userImg.width, f.canvas.height / f.userImg.height) * 0.8;
+                        f.x = (f.canvas.width - f.userImg.width * f.scale) / 2;
+                        f.y = (f.canvas.height - f.userImg.height * f.scale) / 2;
+                        document.querySelector(`.remove-btn[data-id="${id}"]`).style.display = 'inline-block';
+                        draw(id);
+                    };
+                    f.userImg.src = event.target.result;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+    });
+
+    // फोटो हटाउने (Remove) बटन
+    document.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.onclick = (e) => {
+            const id = e.target.dataset.id;
+            const f = frames[id];
+            f.userImg = new Image();
+            document.querySelector(`.img-input[data-id="${id}"]`).value = "";
+            e.target.style.display = 'none';
+            draw(id);
+        };
+    });
+
+    // माउस र टच कन्ट्रोल (सार्न र जुम गर्न)
+    [1, 2].forEach(id => {
+        const f = frames[id];
+        const canvas = f.canvas;
+
+        canvas.onmousedown = (e) => { f.dragging = true; f.lastX = e.clientX; f.lastY = e.clientY; };
+        window.addEventListener('mouseup', () => f.dragging = false);
+        canvas.onmousemove = (e) => {
+            if(!f.dragging || !f.userImg.src) return;
+            f.x += (e.clientX - f.lastX) * (canvas.width / canvas.clientWidth);
+            f.y += (e.clientY - f.lastY) * (canvas.height / canvas.clientHeight);
+            f.lastX = e.clientX; f.lastY = e.clientY;
+            draw(id);
+        };
+
+        // मोबाइल टच ह्यान्डलर
+        canvas.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) { f.dragging = true; f.lastX = e.touches[0].clientX; f.lastY = e.touches[0].clientY; }
+            else if (e.touches.length === 2) { f.initialDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
+        }, { passive: true });
+
+        canvas.addEventListener('touchmove', (e) => {
+            if (!f.userImg.src) return;
+            if (e.touches.length === 2) {
+                e.preventDefault(); 
+                const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                if (f.initialDist) { f.scale *= (dist / f.initialDist); f.initialDist = dist; draw(id); }
+            } else if (e.touches.length === 1 && f.dragging) {
+                const dx = e.touches[0].clientX - f.lastX;
+                const dy = e.touches[0].clientY - f.lastY;
+                if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+                    f.x += dx * (canvas.width / canvas.clientWidth);
+                    f.y += dy * (canvas.height / canvas.clientHeight);
+                    f.lastX = e.touches[0].clientX; f.lastY = e.touches[0].clientY; draw(id);
+                }
+            }
+        }, { passive: false });
+    });
+
+    // डाउनलोड फङ्सन
+    document.querySelectorAll('.download-btn').forEach(btn => {
+        btn.onclick = (e) => {
+            const id = e.target.dataset.id;
+            const canvas = frames[id].canvas;
+            const link = document.createElement('a');
+            link.download = `Lions_Frame_Day_${id}.png`;
+            link.href = canvas.toDataURL("image/png", 1.0);
+            link.click();
+        };
+    });
+</script>
 </body>
 </html>
