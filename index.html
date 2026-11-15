@@ -191,7 +191,7 @@
             const id = e.target.dataset.id;
             if(!frames[id].hasPhoto) { alert("कृपया पहिले फोटो छनोट गर्नुहोस्"); return; }
             const link = document.createElement('a');
-            link.download = `Lions_Frame_Day${id}.png`;
+            link.download = `Cabinet_Frame.png`;
             link.href = frames[id].canvas.toDataURL("image/png");
             link.click();
         };
